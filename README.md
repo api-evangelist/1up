@@ -64,5 +64,41 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-1up is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+1up (1up Corp) is a New York City AI knowledge-automation company whose "Answer Engine"
+generates source-grounded answers for go-to-market teams — auto-completing RFPs, DDQs,
+security questionnaires and vendor assessments from a workspace of approved knowledge
+sources. Founded in 2021 by the founding team behind identity-security vendor HYPR, it has
+raised $8.5M from Upfront Ventures and Lightbank.
+
+- Website: https://1up.ai/
+- Documentation: https://help.1up.ai/en/
+- MCP server: https://help.1up.ai/en/articles/14304740-mcp
+- Pricing: https://1up.ai/pricing
+
+## What this profile found
+
+**1up's public machine surface is an MCP server, not a REST developer program.** There is
+no OpenAPI anywhere — contract discovery probed every host in this record, including the
+platform REST host `api.1upapi.com` named by 1up's own PyPI package, and every spec path
+missed. What 1up does ship is:
+
+- A cloud-hosted **Model Context Protocol server** at `https://mcp.1up.ai/mcp` over
+  Streamable HTTP, protected by OAuth 2.1 (authorization code + PKCE `S256`, dynamic client
+  registration), with **31 documented tools** across the Q&A library, questionnaires,
+  knowledge base, knowledge groups and workspace.
+- Real **RFC 8414** and **RFC 9728** discovery documents on that host — the only
+  `/.well-known/` documents 1up serves anywhere.
+- A first-party **PyPI package**, `1up-mcp` 0.1.0, carrying the OAuth login CLI.
+- A provider-authored **`llms.txt`** at `https://1up.ai/llms.txt`.
+
+**The MCP server is a priced product line, not a free discovery surface.** 1up sells a
+$50/month "MCP" tier and bills questionnaire automation through it at **$0.05 per question
+answered** — which is unusual enough to be the headline finding here.
+
+Notable gaps, recorded rather than papered over: no OpenAPI, no status page, no changelog,
+no rate limits or `429` semantics, no idempotency of any kind, no vulnerability-disclosure
+program, and no A2A agent card. The `resource_documentation` URL 1up publishes in its own
+RFC 9728 document (`https://docs.1up.ai/mcp`) does not resolve, and its `llms.txt`
+advertises a `https://1up.ai/trust` page that returns 404.
+
+Every artifact in this repository carries `generated`, `method` and `source` frontmatter.

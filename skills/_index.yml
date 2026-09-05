@@ -1,0 +1,21 @@
+generated: '2026-09-05'
+method: generated
+source: https://help.1up.ai/en/articles/14304740-mcp
+note: >-
+  1up publishes no OpenAPI, so these skills are grounded in the 31 MCP tool names 1up
+  documents on its own help centre — verified against that page, never invented. The tools'
+  live inputSchemas are OAuth-gated, so the skills name operations and sequencing and
+  deliberately do not assert parameter names.
+skills:
+- file: 1up-automate-a-questionnaire.md
+  name: Automate a questionnaire with 1up
+  api: mcp/1up-mcp.yml
+  operations: [get_workspace_info, upload_questionnaire, list_questionnaires, get_questionnaire, get_questionnaire_questions, regenerate_answer, update_questionnaire_answer, assign_question, add_question_comment, approve_question, bulk_approve_questions, request_questionnaire_export]
+- file: 1up-curate-the-answer-library.md
+  name: Curate the 1up Answer Library
+  api: mcp/1up-mcp.yml
+  operations: [search_qa_library, get_qa_pair, create_qa_pair, update_qa_pair, delete_qa_pair, list_kb_items, get_kb_item, upload_kb_document, delete_kb_item, list_knowledge_groups, get_knowledge_group, create_knowledge_group, add_items_to_knowledge_group, remove_items_from_knowledge_group, delete_knowledge_group]
+- file: 1up-ask-and-cite.md
+  name: Ask 1up a grounded question
+  api: mcp/1up-mcp.yml
+  operations: [list_workspaces, switch_workspace, get_workspace_info, ask_question, search_qa_library, list_knowledge_groups, get_audit_events]

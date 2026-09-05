@@ -1,0 +1,157 @@
+generated: '2026-09-05'
+method: searched
+source: https://help.1up.ai/en/articles/14304740-mcp
+status: published
+name: 1up MCP Server
+description: >-
+  Model Context Protocol server for the 1up knowledge-management platform. Lets an MCP
+  client manage questionnaires, the Q&A library, knowledge-base documents and knowledge
+  groups inside a 1up workspace. 1up sells it as a first-class product tier: the $50/month
+  "MCP" plan on https://1up.ai/pricing includes the server and bills questionnaire
+  automation through it at $0.05 per question answered.
+deployment:
+  mode: both
+  endpoint: https://mcp.1up.ai/mcp
+  install: pip install 1up-mcp
+  package: https://pypi.org/project/1up-mcp/
+  auth: oauth
+  verified: probed
+  note: >-
+    The hosted endpoint is the vendor's current recommendation; the PyPI package 1up-mcp
+    (0.1.0, published 2026-03-27) still ships the `1up-mcp auth login` OAuth CLI and
+    previously ran the server locally over stdio. The vendor's own docs carry a
+    "Migrating from Local (PyPI) Install" section telling users to replace
+    {"command": "1up-mcp"} with {"type": "http", "url": "https://mcp.1up.ai/mcp"}, so
+    stdio is a deprecated-but-published path rather than a parallel product.
+server:
+  name: 1up
+  transport: http
+  transport_detail: Streamable HTTP
+  url: https://mcp.1up.ai/mcp
+  documentation: https://help.1up.ai/en/articles/14304740-mcp
+  client_id: TAWQL8mbs0eHLzaBaxV3Va5vH6qal4Wq
+  auth:
+    type: oauth2
+    flow: authorization_code
+    pkce: S256
+    dynamic_client_registration: https://mcp.1up.ai/register
+    authorization_endpoint: https://mcp.1up.ai/authorize
+    token_endpoint: https://mcp.1up.ai/token
+    scopes: [openid, profile, email, offline_access]
+    discovery:
+      authorization_server: https://mcp.1up.ai/.well-known/oauth-authorization-server
+      protected_resource: https://mcp.1up.ai/.well-known/oauth-protected-resource
+  environment_variables:
+  - name: ONEUP_AUTH_TOKEN
+    description: Bearer token, overrides cached credentials
+  - name: ONEUP_API_URL
+    description: API base URL
+  - name: ONEUP_WORKSPACE_ID
+    description: Workspace ID to use
+x-evidence:
+  fetched: '2026-09-05'
+  tools_list_probe:
+    url: https://mcp.1up.ai/mcp
+    method: POST
+    request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    www_authenticate: Bearer
+    body: '{"error":"unauthorized","error_description":"Missing Authorization header"}'
+    note: >-
+      The live tool schemas are OAuth-gated, so no inputSchema could be captured
+      anonymously. The tool names and descriptions below are transcribed verbatim from
+      1up's own published documentation; they are NOT derived or guessed. Full inputSchemas
+      require an authenticated tools/list.
+  protected_resource:
+    url: https://mcp.1up.ai/.well-known/oauth-protected-resource
+    http_status: 200
+    resource_name: 1up MCP Server
+    resource_documentation: https://docs.1up.ai/mcp
+    note: >-
+      The resource_documentation value the provider publishes, https://docs.1up.ai/mcp,
+      does not resolve (docs.1up.ai is NXDOMAIN as of 2026-09-05). The live documentation
+      is at https://help.1up.ai/en/articles/14304740-mcp.
+tool_count: 31
+tool_count_note: >-
+  1up's documentation groups the tools as Q&A Library (6), Questionnaires (11), Knowledge
+  Base (4), Knowledge Groups (5) and Workspace (4) — but the Knowledge Groups table lists
+  SIX tools, not five, so the documented tool set actually totals 31. Counted from the
+  published tables, not from the group headings.
+tools:
+- group: Q&A Library
+  members:
+  - name: ask_question
+    description: Query the knowledge base with optional filters
+  - name: search_qa_library
+    description: Search Q&A pairs with pagination
+  - name: get_qa_pair
+    description: Get a specific Q&A pair by ID
+  - name: create_qa_pair
+    description: Create a new Q&A pair
+  - name: update_qa_pair
+    description: Update an existing Q&A pair
+  - name: delete_qa_pair
+    description: Archive a Q&A pair
+- group: Questionnaires
+  members:
+  - name: upload_questionnaire
+    description: Upload XLSX/DOCX/PDF/CSV questionnaire files
+  - name: list_questionnaires
+    description: List questionnaires with status/search filters
+  - name: get_questionnaire
+    description: Get full questionnaire details
+  - name: get_questionnaire_questions
+    description: Get questions with answers
+  - name: update_questionnaire_answer
+    description: Edit a specific answer
+  - name: approve_question
+    description: Mark an answer as approved
+  - name: bulk_approve_questions
+    description: Approve multiple questions at once
+  - name: regenerate_answer
+    description: Regenerate AI answer for a question
+  - name: assign_question
+    description: Assign a question to a team member
+  - name: add_question_comment
+    description: Add a comment to a question
+  - name: request_questionnaire_export
+    description: Export as XLSX/DOCX/CSV
+- group: Knowledge Base
+  members:
+  - name: list_kb_items
+    description: List items with search/source filters
+  - name: get_kb_item
+    description: Get KB item details
+  - name: upload_kb_document
+    description: Upload PDF/DOCX/XLSX/CSV documents
+  - name: delete_kb_item
+    description: Delete a KB item
+- group: Knowledge Groups
+  members:
+  - name: list_knowledge_groups
+    description: List all groups
+  - name: get_knowledge_group
+    description: Get group with its documents and Q&A pairs
+  - name: create_knowledge_group
+    description: Create a new group
+  - name: add_items_to_knowledge_group
+    description: Add documents/Q&A pairs to a group
+  - name: remove_items_from_knowledge_group
+    description: Remove items from a group
+  - name: delete_knowledge_group
+    description: Delete a group (items are ungrouped, not deleted)
+- group: Workspace
+  members:
+  - name: list_workspaces
+    description: List accessible workspaces
+  - name: get_workspace_info
+    description: Get workspace details, plan, limits, usage
+  - name: switch_workspace
+    description: Switch active workspace
+  - name: get_audit_events
+    description: Get audit events with pagination
+clients_documented:
+- Claude Code
+- Claude Desktop
+- Cursor
+- Windsurf

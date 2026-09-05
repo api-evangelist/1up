@@ -1,0 +1,80 @@
+generated: '2026-09-05'
+method: derived
+source: >-
+  pypi:1up-mcp==0.1.0 (oneup_mcp/api_client.py OneUpAPIError / _translate_error) ; observed
+  responses from https://mcp.1up.ai/mcp and https://api.1upapi.com/api/v1/
+format: vendor
+note: >-
+  1up publishes no error reference and no OpenAPI, so there are no 4xx/5xx response schemas
+  to derive from. This catalogue is derived from the error-translation table inside 1up's
+  OWN published client library, which is the authoritative statement of which statuses the
+  platform actually returns and what each means, plus two 401 responses observed live. It
+  is NOT RFC 9457: no application/problem+json, no `type` URI, no error-code registry.
+envelopes:
+- surface: MCP server (https://mcp.1up.ai/mcp)
+  media_type: application/json
+  shape: '{"error": "<slug>", "error_description": "<human message>"}'
+  auth_challenge_header: 'WWW-Authenticate: Bearer'
+- surface: platform API (https://api.1upapi.com/api/v1/)
+  media_type: application/json
+  shape: '{"detail": "<human message>"}'
+  framework: Django REST Framework
+problems:
+- status: 400
+  title: Bad request
+  meaning: >-
+    Malformed or invalid request. Also raised client-side with the message "No workspace
+    selected. Use switch_workspace or set ONEUP_WORKSPACE_ID." when a workspace-scoped call
+    is made with no active workspace.
+  remediation: >-
+    Correct the payload, or select a workspace with switch_workspace / ONEUP_WORKSPACE_ID.
+  server_message_passed_through: true
+- status: 401
+  title: Unauthorized
+  meaning: Missing, expired or invalid bearer token.
+  remediation: 'Re-authenticate: `1up-mcp auth login`, or complete the OAuth flow again.'
+  observed:
+  - {url: 'https://mcp.1up.ai/mcp', body: '{"error":"unauthorized","error_description":"Missing Authorization header"}'}
+  - {url: 'https://api.1upapi.com/api/v1/', body: '{"detail":"Authentication credentials were not provided."}'}
+- status: 403
+  title: Permission denied
+  meaning: >-
+    Authenticated, but the account lacks access to this operation IN THIS WORKSPACE. 1up
+    enforces RBAC per workspace, so a 403 is workspace-relative — the same token may succeed
+    after switch_workspace.
+  remediation: Check the user's role in the active workspace, or switch workspace.
+- status: 404
+  title: Resource not found
+  meaning: >-
+    The ID does not exist, or it belongs to a different workspace. 1up's own client message
+    says so explicitly, which means 404 is also how cross-tenant access is denied.
+  remediation: Verify the ID and that it belongs to the active workspace.
+- status: 423
+  title: Locked
+  meaning: >-
+    The resource is locked — most plausibly a questionnaire mid-processing. 1up's client
+    passes the server's message through verbatim instead of substituting its own, which it
+    does for no other status, so the server-side detail is the actionable part.
+  remediation: Read the server message; wait and retry.
+  retry_safe: true
+- status: 5xx
+  title: Server error
+  meaning: Unclassified server-side failure.
+  remediation: >-
+    Retry. 1up's client retries GET twice on 5xx and on timeout; it does NOT retry
+    POST/PATCH/DELETE, because no idempotency key exists — see conventions/1up-conventions.yml.
+  retry_safe: false
+transport_errors:
+- condition: timeout
+  message: 'Could not reach 1up API at {url}. Check ONEUP_API_URL and network.'
+  note: >-
+    Default timeout 30s (10s connect). ask_question streams over SSE with a 130s timeout —
+    1up's code comments that it "can take up to 120s". A 30s agent timeout will falsely
+    report failure on a normal answer generation.
+- condition: connect failure
+  message: 'Could not connect to 1up API at {url}. Check ONEUP_API_URL and network.'
+gaps:
+- No published error reference page.
+- No stable machine-readable error codes — only HTTP status plus free text.
+- No RFC 9457 problem+json, no type URIs.
+- No documented 429; rate-limit behaviour is unknown (see rate-limits/1up-rate-limits.yml).

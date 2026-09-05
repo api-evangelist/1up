@@ -1,0 +1,47 @@
+generated: '2026-09-05'
+method: probed
+source: https://mcp.1up.ai/.well-known/oauth-protected-resource
+docs: https://help.1up.ai/en/articles/14304740-mcp
+note: >-
+  1up publishes no OpenAPI, so derive-oauth-scopes.py has nothing to read. The scope list
+  below is the one the provider actually advertises, taken verbatim from both RFC 8414 and
+  RFC 9728 discovery documents on mcp.1up.ai. It is an OpenID Connect-shaped identity scope
+  set only — there is no resource-level or per-tool permission scope. Authorization inside
+  a workspace is enforced by 1up's own RBAC and workspace isolation, not by OAuth scope, so
+  an agent holding a token has whatever the signed-in user has. Nothing more granular is
+  published.
+schemes:
+- name: 1up MCP OAuth 2.1
+  source: well-known/1up-oauth-protected-resource.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://mcp.1up.ai/authorize
+    tokenUrl: https://mcp.1up.ai/token
+scope_count: 4
+scopes:
+- scope: openid
+  description: OpenID Connect identity — issue an ID token for the signed-in 1up user.
+  flows: [authorizationCode]
+  sources: [well-known/1up-oauth-authorization-server.json, well-known/1up-oauth-protected-resource.json]
+- scope: profile
+  description: Basic profile claims for the signed-in 1up user.
+  flows: [authorizationCode]
+  sources: [well-known/1up-oauth-authorization-server.json, well-known/1up-oauth-protected-resource.json]
+- scope: email
+  description: Email address claim for the signed-in 1up user.
+  flows: [authorizationCode]
+  sources: [well-known/1up-oauth-authorization-server.json, well-known/1up-oauth-protected-resource.json]
+- scope: offline_access
+  description: >-
+    Issue a refresh token so the MCP client can keep working without re-prompting; the
+    1up-mcp CLI caches and auto-refreshes credentials in ~/.1up/credentials.json.
+  flows: [authorizationCode]
+  sources: [well-known/1up-oauth-authorization-server.json, well-known/1up-oauth-protected-resource.json]
+gaps:
+- >-
+  No read/write separation. An agent that can call ask_question can equally call
+  delete_qa_pair, delete_kb_item and delete_knowledge_group — the token does not
+  distinguish them.
+- >-
+  No per-workspace scope. switch_workspace lets a token move between every workspace the
+  user can reach; scope does not pin an agent to one.

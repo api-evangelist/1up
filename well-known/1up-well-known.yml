@@ -1,0 +1,216 @@
+generated: '2026-09-05'
+method: probed
+source: live probe of every host in this record
+note: >-
+  Five hosts probed. mcp.1up.ai — the 1up MCP server — is the only host serving real
+  /.well-known documents: RFC 8414 OAuth authorization server metadata and RFC 9728 OAuth
+  protected resource metadata, both HTTP 200 application/json and both saved here verbatim.
+  The marketing site (1up.ai, Webflow) answers every /.well-known/* path with an 88-byte
+  "Invalid .well-known request" HTML page at HTTP 404. app.1up.ai is a single-page-app
+  catch-all: it returns HTTP 200 with the same 7,548-byte React shell for
+  /.well-known/openid-configuration, /.well-known/oauth-authorization-server,
+  /.well-known/oauth-protected-resource, /.well-known/api-catalog and /apis.yml — those are
+  SOFT 200s, not documents, and are recorded as misses. help.1up.ai serves a real RFC 9116
+  security.txt at HTTP 200, but it is Intercom's vendor default (Canonical:
+  https://app.intercom.com/.well-known/security.txt, Contact: security@intercom.com,
+  bugcrowd.com/intercom) served through the Intercom-hosted help subdomain — it is NOT a
+  1up disclosure policy, so it is saved for the record and NO SecurityTxt pointer is
+  emitted. api.1upapi.com (the platform REST host named by 1up's own PyPI package) serves
+  no discovery documents at all.
+path_echo_control: passed
+soft_404_control:
+  - host: https://app.1up.ai
+    path: /.well-known/1up-negative-control-7f3ab91c.json
+    status: 404
+    note: >-
+      Control 404s, but five real paths on this host return HTTP 200 with a byte-identical
+      7548-byte SPA shell; treated as a catch-all and scored as misses.
+  - host: https://mcp.1up.ai
+    path: /.well-known/1up-negative-control-7f3ab91c.json
+    status: 401
+    note: Control is not 2xx; the two 200s on this host are genuine documents.
+hit_count: 2
+hosts:
+- host: https://mcp.1up.ai
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: 1up-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: 1up-oauth-protected-resource.json
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/openid-configuration
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+  - path: /.well-known/api-catalog.json
+    status: 401
+  - path: /.well-known/ai-plugin.json
+    status: 401
+  - path: /.well-known/ucp.json
+    status: 401
+  - path: /.well-known/acp.json
+    status: 401
+  - path: /.well-known/aauth-resource.json
+    status: 401
+  - path: /.well-known/apis.json
+    status: 401
+  - path: /apis.json
+    status: 401
+  - path: /apis.yml
+    status: 401
+  - path: /.well-known/agent-card.json
+    status: 401
+  - path: /.well-known/agent.json
+    status: 401
+- host: https://1up.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/api-catalog.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.1up.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://app.1up.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: soft-200 SPA shell (text/html, 7548 bytes) — not a document, not counted
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    note: soft-200 SPA shell (text/html, 7548 bytes) — not a document, not counted
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    note: soft-200 SPA shell (text/html, 7548 bytes) — not a document, not counted
+  - path: /.well-known/api-catalog
+    status: 200
+    note: soft-200 SPA shell (text/html, 7548 bytes) — not a document, not counted
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 200
+    note: soft-200 SPA shell (text/html, 7548 bytes) — not an APIs.json index, not counted
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://help.1up.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: 1up-help-intercom-security.txt
+    note: >-
+      Intercom's vendor security.txt served on the Intercom-hosted help subdomain.
+      Canonical is https://app.intercom.com/.well-known/security.txt and Contact is
+      security@intercom.com / bugcrowd.com/intercom. NOT a 1up disclosure policy —
+      recorded, but no SecurityTxt pointer is emitted for 1up.
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.1upapi.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404

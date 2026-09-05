@@ -1,0 +1,117 @@
+generated: '2026-09-05'
+method: searched
+source: https://1up.ai/pricing
+currency: USD
+billing_periods: [monthly, annual]
+annual_discount: 15%
+plan_count: 6
+note: >-
+  1up sells its MCP server as its own priced tier — a $50/month plan whose entire value
+  proposition is machine access, billed per answered question. That is rare enough to be
+  worth stating plainly: for most providers in this catalog an MCP server is a free
+  discovery surface bolted onto a seat-priced product; here it is the product line. The
+  pricing page splits into two product tracks, "Employee Answers" (Free / MCP / Starter /
+  Plus / Enterprise) and "Customer Answers" (Answer Hub).
+plans:
+- name: Free
+  track: Employee Answers
+  price: 0
+  currency: USD
+  period: month
+  quota:
+    admins: 1
+    users: 0
+    knowledge_uploads: 50
+    answers_per_month: 50
+  includes: []
+  excludes: [MCP Server, Answer Hub, Knowledge Connectors, chat plugins, browser extension, SSO]
+- name: MCP
+  track: Employee Answers
+  price: 50
+  currency: USD
+  period: month
+  pricing_model: base + usage
+  overage:
+    unit: question answered
+    price: 0.05
+    currency: USD
+    stated_as: '$5 / 100 answers'
+    note: >-
+      "Questionnaire automation through the 1up MCP server is billed monthly at $0.05 per
+      question answered." Pay as you go.
+  includes:
+  - MCP Server
+  - Pay-as-you-go questionnaire automations
+  - Works with your company's AI platform
+  quota:
+    admins: 3
+  note: >-
+    The cheapest tier that includes the MCP server. Explicitly positioned as "Connect with
+    your preferred AI".
+- name: Starter
+  track: Employee Answers
+  price: 300
+  currency: USD
+  period: month
+  includes:
+  - Everything in Free
+  - MCP Server
+  - Unlimited Users
+  - Unlimited Answers
+  - Slack, Teams, Google Chat and Browser Plugins
+  - Knowledge Connectors
+  - Custom Answer Hub
+  - Single Sign-On
+  quota:
+    admins: 10
+    knowledge_uploads: 50
+    questionnaires: 1
+  note: '1 Questionnaire — $300/month'
+- name: Plus
+  track: Employee Answers
+  price: 900
+  currency: USD
+  period: month
+  includes:
+  - Everything in Starter
+  - KB Plushie
+  - Team Training
+  quota:
+    admins: unlimited
+    knowledge_uploads: 200
+    questionnaires: 6
+  note: '6 Questionnaires — $900/month'
+- name: Enterprise
+  track: Employee Answers
+  price: null
+  price_model: contact sales
+  includes:
+  - Everything in Plus
+  - Dedicated Success Manager
+  quota:
+    admins: unlimited
+    users: unlimited
+    knowledge_uploads: unlimited
+    questionnaires: custom
+- name: Answer Hub
+  track: Customer Answers
+  price: 1000
+  currency: USD
+  period: month
+  description: >-
+    Customer-facing answer surface — answers sales and product questions from approved
+    sources, loops in a human at strategic moments, tracks what buyers ask verbatim, and
+    shares public and private docs.
+trial:
+  length_days: 14
+  self_service: true
+  url: https://app.1up.ai/signup
+  note: >-
+    Free plan and 14-day trial are both self-service; the security page states "1up plans
+    start as low as $250 per month" for questionnaire automation, which does not match the
+    $300 Starter tier on the pricing page — a stale figure on the /security page.
+procurement:
+  url: https://help.1up.ai/en/articles/12995986-pricing-and-procurement
+  custom_payment_terms: on request
+  msa_review: on request
+  security_review: on request (SOC 2 report request-only)

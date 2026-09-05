@@ -1,0 +1,128 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  https://mcp.1up.ai/.well-known/oauth-authorization-server ;
+  https://mcp.1up.ai/.well-known/oauth-protected-resource ; https://mcp.1up.ai/mcp ;
+  https://1up.ai/security ; https://help.1up.ai/en/articles/14304740-mcp
+note: >-
+  Asserted against probed discovery documents and observed responses, not against an
+  OpenAPI — 1up publishes none. Every `conforms: true` below is backed by a document that
+  was fetched, and every `conforms: false` is a real, checked absence.
+standards:
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    Hosted server at https://mcp.1up.ai/mcp over Streamable HTTP; documented client configs
+    for Claude Code, Claude Desktop, Cursor and Windsurf; POST tools/list answers with an
+    RFC 6750 Bearer challenge rather than a transport error.
+- id: oauth2
+  name: OAuth 2.0 / 2.1 authorization code
+  conforms: true
+  evidence: >-
+    https://mcp.1up.ai/.well-known/oauth-authorization-server declares
+    grant_types_supported [authorization_code, refresh_token] and response_types_supported
+    [code].
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: HTTP 200 application/json at /.well-known/oauth-authorization-server on mcp.1up.ai
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: true
+  evidence: >-
+    HTTP 200 application/json at /.well-known/oauth-protected-resource on mcp.1up.ai,
+    naming resource https://mcp.1up.ai/mcp and authorization_servers [https://mcp.1up.ai]
+- id: rfc7636
+  name: PKCE
+  conforms: true
+  evidence: code_challenge_methods_supported ["S256"] in the authorization server metadata
+- id: rfc7591
+  name: OAuth 2.0 Dynamic Client Registration
+  conforms: true
+  evidence: registration_endpoint https://mcp.1up.ai/register in the authorization server metadata
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage
+  conforms: true
+  evidence: >-
+    bearer_methods_supported ["header"]; an unauthenticated POST to https://mcp.1up.ai/mcp
+    returns HTTP 401 with WWW-Authenticate: Bearer
+- id: oidc
+  name: OpenID Connect
+  conforms: partial
+  evidence: >-
+    The openid, profile and email scopes are advertised and identity is federated through
+    Auth0 (1up-app.us.auth0.com), but mcp.1up.ai serves no
+    /.well-known/openid-configuration (HTTP 401) and no OIDC discovery document was found
+    on any 1up host, so an OIDC relying party cannot self-configure.
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: >-
+    404 on 1up.ai, www.1up.ai, app.1up.ai and api.1upapi.com. The 200 on help.1up.ai is
+    Intercom's vendor document (Canonical https://app.intercom.com/.well-known/security.txt).
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors are not application/problem+json. The MCP server returns
+    {"error","error_description"}; api.1upapi.com returns the Django REST Framework
+    {"detail": ...} envelope.
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: >-
+    Contract discovery ran against every host this record knows and missed everywhere.
+    api.1upapi.com — the platform REST host named by 1up's own PyPI package — returned 404
+    for /openapi.json, /openapi.yaml, /swagger.json, /api-docs, /docs, /redoc, /api/schema,
+    /api/schema/, /api/schema.json, /api/docs, /api/swagger.json, /swagger/, /schema/,
+    /api/v1/openapi.json, /api/v1/schema, /api/v1/schema/, /api/v1/docs/,
+    /api/v1/swagger.json, /api/v1/redoc/ and /api/schema/swagger-ui/, while
+    GET /api/v1/ returned a live HTTP 401 Django REST Framework challenge. 1up.ai,
+    docs.1up.ai (NXDOMAIN), developers.1up.ai (NXDOMAIN), api.1up.ai (NXDOMAIN),
+    help.1up.ai and mcp.1up.ai produced nothing either. No GraphQL surface, no gRPC/proto,
+    no WSDL and no OGC surface exists or is implied. The machine-readable contract 1up
+    actually ships is the MCP server, and its tool schemas are OAuth-gated.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: No event, streaming or webhook surface is documented anywhere in the help centre.
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 (or a 401 on
+    mcp.1up.ai) on every host probed.
+- id: apis-json
+  name: APIs.json
+  conforms: false
+  evidence: /apis.json, /apis.yml and /.well-known/apis.json miss on every host probed.
+- id: llms-txt
+  name: llms.txt
+  conforms: true
+  evidence: >-
+    HTTP 200 text/plain at https://1up.ai/llms.txt, 3,215 bytes, self-dated 2026-03-02 and
+    saved verbatim to llms/1up-llms.txt.
+- id: soc2
+  name: SOC 2 Type 2
+  conforms: true
+  evidence: AICPA SOC 2 Type 2 badge published on https://1up.ai/security; report is request-only
+- id: iso27001
+  name: ISO/IEC 27001
+  conforms: true
+  evidence: ISO 27001 badge published on https://1up.ai/security
+- id: gdpr
+  name: GDPR
+  conforms: true
+  evidence: >-
+    GDPR compliance badge on https://1up.ai/security plus documented EU data-residency
+    option (AWS EU availability zone)
+domain_standard:
+  applicable: false
+  note: >-
+    Sales-enablement / RFP-response automation has no interoperable domain standard for a
+    contract to declare — no SCIM-, OData-, HL7-, OpenRTB- or LTI-equivalent exists for
+    questionnaire exchange. The market's formats are the documents themselves (XLSX, DOCX,
+    PDF, CSV) and vendor-specific portals (OneTrust, Panorays, Whistic, Venminder, CyberGRX,
+    SecurityScorecard), all of which 1up supports as inputs. Reward-only dimension; nothing
+    invented to fill it.

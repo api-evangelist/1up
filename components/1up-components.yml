@@ -1,0 +1,49 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://1up.ai/integrations ; https://help.1up.ai/en/articles/12997336-browser-extension ;
+  https://1up.ai/answer-hub
+note: >-
+  1up ships no embeddable JavaScript element library or web-component set. What it does
+  ship on the client side are two browser extensions and a hosted, brandable public answer
+  surface. Chat-platform apps (Slack, Microsoft Teams, Google Chat) are listed here because
+  they are the delivery surface for the same answer engine, but they are installed apps
+  rather than components a developer embeds.
+families:
+- family: Browser extensions
+  description: >-
+    Generates answers in place inside any web-based RFP, questionnaire or portal — highlight
+    a question to answer it, or Autodetect to scan the whole page. Documented to work inside
+    Google Sheets, Google Docs and Microsoft Office Online, and on portals including
+    OneTrust, Panorays and Whistic.
+  components:
+  - name: 1up Chrome Extension
+    store: Chrome Web Store
+    id: gmelelaeonjhacddbbiabbefajpgjbji
+    url: https://chromewebstore.google.com/detail/1up-chrome-extension/gmelelaeonjhacddbbiabbefajpgjbji
+    docs: https://help.1up.ai/en/articles/12997350-chrome
+  - name: 1up Edge Extension
+    store: Microsoft Edge Add-ons
+    id: gedpfnnlaohlkopcgladpjlgpgdaddpj
+    url: https://microsoftedge.microsoft.com/addons/detail/1up-edge-extension/gedpfnnlaohlkopcgladpjlgpgdaddpj
+    docs: https://help.1up.ai/en/articles/12997351-edge
+- family: Hosted answer surface
+  description: >-
+    Answer Hub is a hosted, customer-facing page that answers buyer questions from approved
+    sources and loops in a human at chosen moments. Sold separately at $1,000/month.
+  components:
+  - name: Answer Hub
+    url: https://1up.ai/answer-hub
+    hosted: true
+- family: Chat platform apps
+  description: >-
+    Ask 1up inside the chat client. Installed apps, not embeddable components.
+  components:
+  - name: Slack app
+    url: https://1up.ai/slack-integration
+    docs: https://help.1up.ai/en/articles/12997353-slack
+  - name: Microsoft Teams app
+    url: https://1up.ai/microsoft-teams-integration
+    docs: https://help.1up.ai/en/articles/12997375-microsoft-teams
+  - name: Google Chat app
+    docs: https://help.1up.ai/en/articles/12997356-google-chat

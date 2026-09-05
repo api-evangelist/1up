@@ -1,0 +1,100 @@
+generated: '2026-09-05'
+method: derived
+source: >-
+  pypi:1up-mcp==0.1.0 (oneup_mcp/server.py call sites, oneup_mcp/api_client.py URL
+  builders) ; https://help.1up.ai/en/articles/14304740-mcp
+note: >-
+  There is no OpenAPI to derive a schema graph from. This entity model is derived from the
+  REST collection names 1up's OWN published client calls and from the tool groupings in
+  1up's own MCP documentation — both first-party and both verifiable. FIELD-LEVEL SCHEMAS
+  ARE NOT INCLUDED, because they are not published: the live MCP inputSchemas are
+  OAuth-gated and the platform API has no public reference. Entities and relationships
+  only; nothing invented.
+base:
+  global: https://api.1upapi.com/api/v1/{collection}/
+  workspace_scoped: https://api.1upapi.com/api/v1/workspaces/{workspace_id}/{collection}/
+  note: >-
+    Trailing slashes are significant — every path 1up's client builds ends in one, which is
+    Django REST Framework's default routing.
+entities:
+- name: Workspace
+  collection: workspaces
+  scope: global
+  description: >-
+    The tenant boundary. Carries plan, limits and usage; every other entity lives inside
+    exactly one. get_workspace_info reads "workspace details, plan, limits, usage".
+  tools: [list_workspaces, get_workspace_info, switch_workspace]
+- name: User
+  collection: users
+  scope: workspace
+  description: >-
+    Workspace members, addressable as assignees. RBAC controls who may view, edit and
+    approve.
+  tools: []
+  note: Read by the client's workspace summary path; no dedicated MCP tool is documented.
+- name: QuestionAndAnswer
+  collection: questionandanswers
+  scope: workspace
+  description: >-
+    A curated Q&A pair in the Answer Library — the reusable knowledge unit 1up answers
+    from. Deleting one archives it rather than destroying it.
+  tools: [search_qa_library, get_qa_pair, create_qa_pair, update_qa_pair, delete_qa_pair]
+- name: Questionnaire
+  collection: questionnaires
+  scope: workspace
+  description: >-
+    An uploaded RFP / DDQ / security questionnaire document (XLSX, DOCX, PDF or CSV) and
+    its processing state. Carries an is_archived flag.
+  tools: [upload_questionnaire, list_questionnaires, get_questionnaire, request_questionnaire_export]
+- name: QuestionnaireQuestionAndAnswer
+  collection: questionnairequestionandanswers
+  scope: workspace
+  description: >-
+    One question inside a questionnaire, with its generated answer, approval state,
+    assignee and comments. This is the billing unit — the MCP tier charges $0.05 per
+    question answered.
+  tools: [get_questionnaire_questions, update_questionnaire_answer, approve_question, bulk_approve_questions, regenerate_answer, assign_question, add_question_comment]
+- name: UserDataSource
+  collection: userdatasources
+  scope: workspace
+  description: >-
+    A knowledge-base item — an uploaded document (PDF/DOCX/XLSX/CSV) or a connected source
+    (website, Confluence, Notion, Google Drive, OneDrive, SharePoint, Box, Dropbox, Egnyte,
+    Salesforce, Highspot, Seismic, Zendesk, Gong, GitBook, GitHub). Exposes extracted text
+    at a /text/ subresource.
+  tools: [list_kb_items, get_kb_item, upload_kb_document, delete_kb_item]
+- name: KnowledgeGroup
+  collection: knowledgegroups
+  scope: workspace
+  description: >-
+    A named grouping of documents and Q&A pairs used to scope which sources an answer may
+    draw from. Deleting a group ungroups its members rather than deleting them.
+  tools: [list_knowledge_groups, get_knowledge_group, create_knowledge_group, add_items_to_knowledge_group, remove_items_from_knowledge_group, delete_knowledge_group]
+- name: AuditEvent
+  collection: auditevents
+  scope: workspace
+  description: Append-only workspace activity log, paginated.
+  tools: [get_audit_events]
+relationships:
+- {from: Workspace, to: User, kind: has_many}
+- {from: Workspace, to: QuestionAndAnswer, kind: has_many}
+- {from: Workspace, to: Questionnaire, kind: has_many}
+- {from: Workspace, to: UserDataSource, kind: has_many}
+- {from: Workspace, to: KnowledgeGroup, kind: has_many}
+- {from: Workspace, to: AuditEvent, kind: has_many}
+- {from: Questionnaire, to: QuestionnaireQuestionAndAnswer, kind: has_many, via: questionnaire}
+  # evidence: client calls questionnairequestionandanswers/ with params {"questionnaire": <id>}
+- {from: QuestionnaireQuestionAndAnswer, to: Questionnaire, kind: belongs_to, via: questionnaire}
+- {from: QuestionnaireQuestionAndAnswer, to: User, kind: has_one, via: assignee}
+  # evidence: assign_question — "Assign a question to a team member"
+- {from: KnowledgeGroup, to: UserDataSource, kind: has_many}
+  # evidence: get_knowledge_group — "Get group with its documents and Q&A pairs"
+- {from: KnowledgeGroup, to: QuestionAndAnswer, kind: has_many}
+- {from: UserDataSource, to: UserDataSourceText, kind: has_one, via: /text/ subresource}
+subresources:
+- path: userdatasources/{id}/text/
+  description: Extracted text of a knowledge-base item
+gaps:
+- Field-level schemas, types and required-ness are not published on any surface.
+- ID formats and prefixes are not published.
+- No public object reference page exists to enrich this from.

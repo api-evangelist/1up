@@ -1,0 +1,59 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://1up.ai/pricing ; https://help.1up.ai/en/articles/14304740-mcp ;
+  pypi:1up-mcp==0.1.0 (oneup_mcp/api_client.py)
+limit_count: 0
+note: >-
+  1up publishes NO rate limits and NO rate-limit response headers. Checked: the MCP help
+  article, the whole help centre, the pricing page and 1up's own published client library,
+  which has no HTTP 429 branch at all — it names 400, 401, 403, 404 and 423 and falls
+  through to a generic message for everything else, which is good evidence that 429 is not
+  a status the platform is expected to return. No X-RateLimit-*, no RateLimit-*, no
+  Retry-After behaviour is documented. An honest zero: nothing was found, and nothing was
+  invented. What DOES constrain an agent here is quota and money, not requests per second —
+  recorded below as quotas, which are a different fact and must not be counted as rate
+  limits.
+rate_limits: []
+response_headers:
+  documented: []
+  observed: []
+  note: >-
+    Observed on the anonymous 401 from https://mcp.1up.ai/mcp: date, content-type,
+    content-length, server (uvicorn), www-authenticate, access-control-allow-origin,
+    access-control-expose-headers (Mcp-Session-Id). No rate-limit header of any family.
+exhaustion_status: unknown
+quotas:
+  note: >-
+    Plan quotas, not rate limits. Source https://1up.ai/pricing — see
+    plans/1up-plans-pricing.yml.
+  entries:
+  - {plan: Free, metric: answers, limit: 50, window: month}
+  - {plan: Free, metric: knowledge_uploads, limit: 50, window: lifetime}
+  - {plan: Free, metric: admins, limit: 1}
+  - {plan: MCP, metric: answers, limit: metered, unit_price_usd: 0.05, window: month}
+  - {plan: Starter, metric: answers, limit: unlimited}
+  - {plan: Starter, metric: questionnaires, limit: 1}
+  - {plan: Starter, metric: knowledge_uploads, limit: 50}
+  - {plan: Plus, metric: questionnaires, limit: 6}
+  - {plan: Plus, metric: knowledge_uploads, limit: 200}
+runtime_signal:
+  tool: get_workspace_info
+  detail: >-
+    The only runtime way an agent can read its own budget: 1up documents get_workspace_info
+    as returning "workspace details, plan, limits, usage". Because there is no 429 and no
+    header, this tool is the whole rate-limit signal — an agent should call it before any
+    bulk operation rather than discovering exhaustion from a failed write.
+timeouts:
+  note: >-
+    Client-side, from 1up's own published library — these are not server limits but they
+    are the practical ceiling on a call.
+  default: 30s (10s connect)
+  streaming: 130s for ask_question; 1up's code notes it "can take up to 120s"
+  retries: GET retried up to 2x on 5xx or timeout; POST/PATCH/DELETE never retried
+gaps:
+- No published rate limit of any kind.
+- No 429 semantics, no Retry-After, no rate-limit headers.
+- >-
+  An agent that overruns cannot tell throttling from failure, and on the metered MCP tier
+  every retried write is billable.

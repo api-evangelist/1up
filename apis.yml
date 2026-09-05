@@ -1,18 +1,70 @@
 aid: 1up
 name: 1up
-description: '1up is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  1up (1up Corp, 1up.ai) is a New York City based AI knowledge-automation company whose
+  "Answer Engine" generates source-grounded answers for go-to-market teams. The platform
+  connects approved knowledge sources — Confluence, Notion, Google Drive, OneDrive,
+  SharePoint, Box, Dropbox, Egnyte, Salesforce, Highspot, Seismic, Zendesk, Gong, GitBook,
+  GitHub and public websites — into a workspace-isolated knowledge base, then uses it to
+  auto-complete RFPs, DDQs, security questionnaires and vendor assessments in Excel, Word,
+  PDF, CSV and web portals such as OneTrust, Panorays and Whistic. 1up's public machine
+  surface is an MCP server rather than a REST developer program: a cloud-hosted, OAuth 2.1
+  protected Model Context Protocol endpoint at https://mcp.1up.ai/mcp exposing 31 documented
+  tools across the Q&A library, questionnaires, knowledge base, knowledge groups and
+  workspace, sold as its own $50/month pricing tier billed at $0.05 per answered question.
+  Founded in 2021 by the founding team behind identity-security vendor HYPR, 1up has raised
+  $8.5M from Upfront Ventures and Lightbank.
+image: https://cdn.prod.website-files.com/69c22ac6beee399088a918e7/69e1a4a063f3ef04164ea555_4bdbffc375cfff493276c814781ae9b9_OG.jpg
 url: https://raw.githubusercontent.com/api-evangelist/1up/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-05'
 modified: '2026-09-05'
 tags:
 - Company
-apis: []
+- Artificial Intelligence
+- Sales Enablement
+- Knowledge Management
+- RFP Automation
+- Security Questionnaires
+- Model Context Protocol
+- Agents
+- SaaS
+- Revenue Operations
+apis:
+- aid: 1up-mcp-server
+  name: 1up MCP Server
+  description: >-
+    The 1up MCP Server is a cloud-hosted Model Context Protocol server that lets an AI
+    assistant work directly against a 1up workspace — query the knowledge base, search and
+    edit the Q&A library, upload and drive questionnaires, manage knowledge-base documents
+    and knowledge groups, switch workspaces and read audit events. It speaks MCP over
+    Streamable HTTP at https://mcp.1up.ai/mcp and authenticates with OAuth 2.1
+    (authorization code + PKCE S256, dynamic client registration), advertised through
+    RFC 8414 and RFC 9728 discovery documents on the same host. 1up documents 31 tools in
+    five groups: Q&A Library (6), Questionnaires (11), Knowledge Base (4), Knowledge Groups
+    (6) and Workspace (4). A companion PyPI package, 1up-mcp, provides the OAuth login CLI
+    and previously ran the server locally over stdio; the vendor now directs users to the
+    hosted endpoint.
+  image: https://cdn.prod.website-files.com/69c22ac6beee399088a918e7/69fb387104c89f3be337de1d_1up_favicon.png
+  humanURL: https://help.1up.ai/en/articles/14304740-mcp
+  baseURL: https://mcp.1up.ai/mcp
+  tags:
+  - Model Context Protocol
+  - Agents
+  - Knowledge Management
+  - RFP Automation
+  properties:
+  - type: MCPServer
+    url: mcp/1up-mcp.yml
+  - type: Documentation
+    url: https://help.1up.ai/en/articles/14304740-mcp
+  - type: Authentication
+    url: authentication/1up-authentication.yml
+  - type: OAuthScopes
+    url: scopes/1up-scopes.yml
+  position: Producing
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +72,71 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://1up.ai/
+- type: Documentation
+  url: https://help.1up.ai/en/
+- type: APIReference
+  url: https://help.1up.ai/en/articles/14304740-mcp
+- type: GettingStarted
+  url: https://help.1up.ai/en/articles/13002972-quick-start-guide
+- type: Support
+  url: https://1up.ai/support
+- type: Blog
+  url: https://1up.ai/blog
+- type: Pricing
+  url: https://1up.ai/pricing
+- type: SignUp
+  url: https://app.1up.ai/signup
+- type: Login
+  url: https://app.1up.ai/login
+- type: TermsOfService
+  url: https://1up.ai/legal/terms-of-service
+- type: PrivacyPolicy
+  url: https://1up.ai/legal/privacy-policy
+- type: MCPServer
+  url: mcp/1up-mcp.yml
+- type: LLMsTxt
+  url: llms/1up-llms.txt
+- type: WellKnown
+  url: well-known/1up-well-known.yml
+- type: Packages
+  url: packages/1up-packages.yml
+- type: SDKs
+  url: packages/1up-packages.yml
+- type: CLI
+  url: cli/1up-cli.yml
+- type: Components
+  url: components/1up-components.yml
+- type: Authentication
+  url: authentication/1up-authentication.yml
+- type: OAuthScopes
+  url: scopes/1up-scopes.yml
+- type: Conformance
+  url: conformance/1up-conformance.yml
+- type: Conventions
+  url: conventions/1up-conventions.yml
+- type: ErrorCatalog
+  url: errors/1up-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/1up-lifecycle.yml
+- type: DataModel
+  url: data-model/1up-data-model.yml
+- type: DomainSecurity
+  url: security/1up-domain-security.yml
+- type: Plans
+  url: plans/1up-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/1up-rate-limits.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: TrustCenter
+  url: security/1up-trust-center.yml
+- type: Compliance
+  url: https://1up.ai/security
+- type: Newsroom
+  url: https://1up.ai/news
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v3

@@ -1,0 +1,39 @@
+generated: '2026-09-05'
+method: searched
+source: https://help.1up.ai/en/articles/14304740-mcp
+name: 1up-mcp
+description: >-
+  1up ships one first-party command-line tool, `1up-mcp`, inside the PyPI package of the
+  same name. Its documented job is OAuth device/browser login against the 1up platform so
+  an MCP client can reach a workspace; the same package historically ran the MCP server
+  itself over stdio. It is an auth utility, not a general-purpose API CLI — there is no
+  documented command surface for questionnaires, the Q&A library or the knowledge base
+  outside MCP tool calls.
+install:
+- method: pip
+  command: pip install 1up-mcp
+- method: pipx
+  command: pipx install 1up-mcp
+  note: isolated install, recommended for CLI tools
+- method: uvx
+  command: uvx 1up-mcp auth login
+  note: zero-install, runs directly
+requires: Python 3.10+
+commands:
+- group: auth
+  members:
+  - command: 1up-mcp auth login
+    description: Opens browser for SSO login
+  - command: 1up-mcp auth status
+    description: Show current auth status
+  - command: 1up-mcp auth logout
+    description: Remove cached credentials
+credentials:
+  path: ~/.1up/credentials.json
+  behaviour: cached locally and automatically refreshed
+  removal: rm -rf ~/.1up
+environment_variables:
+- {name: ONEUP_AUTH_TOKEN, description: Bearer token (overrides cached credentials)}
+- {name: ONEUP_API_URL, description: API base URL}
+- {name: ONEUP_WORKSPACE_ID, description: Workspace ID to use}
+package: packages/1up-packages.yml

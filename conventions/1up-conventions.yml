@@ -1,0 +1,160 @@
+generated: '2026-09-05'
+method: derived
+source: >-
+  https://help.1up.ai/en/articles/14304740-mcp ;
+  https://mcp.1up.ai/.well-known/oauth-protected-resource ; observed 401 responses on
+  https://mcp.1up.ai/mcp and https://api.1upapi.com/api/v1/ ; pypi:1up-mcp==0.1.0
+note: >-
+  1up has no REST developer program, so there are no published request/response conventions
+  in the usual sense. What follows is the cross-cutting semantics of the surface that IS
+  public — the MCP server — plus what 1up's own published client library
+  (pypi 1up-mcp 0.1.0) demonstrates about the platform API behind it. Anything sourced from
+  the package is labelled as such; nothing here is inferred from a spec, because there is
+  no spec.
+authentication:
+  style: OAuth 2.1 bearer token in the Authorization header
+  discovery: RFC 8414 + RFC 9728 on mcp.1up.ai
+  detail: authentication/1up-authentication.yml
+  scopes: scopes/1up-scopes.yml
+transport:
+  protocol: Model Context Protocol over Streamable HTTP
+  endpoint: https://mcp.1up.ai/mcp
+  content_negotiation: 'Accept: application/json, text/event-stream'
+  streaming: >-
+    ask_question is served as an SSE stream. 1up's own client allows up to 130s for it
+    (STREAM_TIMEOUT) and notes the call "can take up to 120s"; ordinary calls use a 30s
+    timeout with a 10s connect timeout. An agent must budget minutes, not milliseconds, for
+    an answer generation.
+  source: pypi:1up-mcp==0.1.0 (oneup_mcp/api_client.py)
+versioning:
+  scheme: uri-path
+  current: v1
+  evidence: >-
+    All platform calls are built as {base}/api/v1/... and {base}/api/v1/workspaces/{id}/...
+    by 1up's published client. The MCP surface itself carries no version identifier.
+  detail: lifecycle/1up-lifecycle.yml
+tenancy:
+  model: workspace-scoped
+  detail: >-
+    Almost every call is scoped to a workspace and fails without one. The client raises
+    "No workspace selected. Use switch_workspace or set ONEUP_WORKSPACE_ID." (HTTP 400)
+    when none is set. list_workspaces is one of the few global calls. THIS IS THE MOST
+    IMPORTANT CONVENTION FOR AN AGENT: switch_workspace silently changes which tenant every
+    subsequent write lands in, and no OAuth scope pins the agent to one workspace.
+  env_var: ONEUP_WORKSPACE_ID
+pagination:
+  style: documented-but-unspecified
+  detail: >-
+    Two tools are documented as paginated — search_qa_library ("Search Q&A pairs with
+    pagination") and get_audit_events ("Get audit events with pagination") — but the page
+    parameters, page size, cursor form and response envelope are not published anywhere
+    public. The live inputSchemas that would answer this are OAuth-gated.
+  parameters: unknown
+  response_fields: unknown
+filtering:
+  detail: >-
+    Documented as free-text on several tools: ask_question takes "optional filters",
+    list_questionnaires takes "status/search filters", list_kb_items takes "search/source
+    filters". Filter grammar is not published.
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  header: null
+  detail: >-
+    No idempotency key, no client-supplied request id, and no replay protection is
+    documented on any 1up surface. Retries are unsafe on the mutating tools: 1up's own
+    published client retries GET (and only GET) up to twice on a 5xx or a timeout, and
+    performs POST/PATCH/DELETE exactly once with no dedupe token — which is the correct
+    behaviour precisely BECAUSE writes are not idempotent. An agent that re-issues
+    create_qa_pair, upload_questionnaire, upload_kb_document, add_question_comment or
+    bulk_approve_questions after a timeout will duplicate the effect.
+  source: pypi:1up-mcp==0.1.0 (oneup_mcp/api_client.py MAX_RETRIES, get/post/patch/delete)
+reversibility:
+  grade: documented
+  detail: >-
+    1up documents soft-delete semantics on two of its three destructive tools, in its own
+    tool descriptions, but states no window for undoing any of them and publishes no
+    restore/undelete tool. So the reversal SEMANTICS are documented and the reversal PATH is
+    not: an agent can read that a Q&A pair is archived rather than destroyed, but there is
+    no published operation to bring it back and no stated period during which that would be
+    possible.
+  write_surfaces:
+  - operation: delete_qa_pair
+    destructive: true
+    reversal: soft-delete (archive)
+    reversal_operation: null
+    window: not stated
+    evidence: >-
+      Tool description reads "Archive a Q&A pair", not delete —
+      https://help.1up.ai/en/articles/14304740-mcp
+  - operation: delete_knowledge_group
+    destructive: true
+    reversal: grouping only; member items survive
+    reversal_operation: create_knowledge_group + add_items_to_knowledge_group
+    window: not stated
+    evidence: >-
+      Tool description reads "Delete a group (items are ungrouped, not deleted)" —
+      https://help.1up.ai/en/articles/14304740-mcp
+  - operation: delete_kb_item
+    destructive: true
+    reversal: none documented
+    reversal_operation: null
+    window: not stated
+    evidence: >-
+      Tool description reads "Delete a KB item", with no archive language, unlike
+      delete_qa_pair. Treat as unrecoverable.
+  - operation: remove_items_from_knowledge_group
+    destructive: false
+    reversal: add_items_to_knowledge_group
+    window: n/a
+  - operation: approve_question / bulk_approve_questions
+    destructive: false
+    reversal: update_questionnaire_answer
+    window: n/a
+  gap: >-
+    No published retention window for archived Q&A pairs, and no restore operation of any
+    kind. An agent cannot promise a human that a delete is undoable.
+dry_run_mode:
+  supported: false
+  detail: No preview, validate-only or dry-run parameter is documented on any tool.
+error_envelope:
+  mcp:
+    shape: '{"error": "<code>", "error_description": "<message>"}'
+    observed: 'HTTP 401 {"error":"unauthorized","error_description":"Missing Authorization header"}'
+  platform_api:
+    shape: '{"detail": "<message>"}'
+    observed: 'HTTP 401 {"detail":"Authentication credentials were not provided."}'
+    framework: Django REST Framework
+  problem_json: false
+  detail: errors/1up-problem-types.yml
+rate_limit_signaling:
+  headers: none published
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After behaviour is documented, and 1up's own
+    client has no 429 branch — it translates 400/401/403/404/423 by name and everything
+    else generically. See rate-limits/1up-rate-limits.yml.
+metering:
+  detail: >-
+    Usage, not rate, is the governing limit. The MCP tier bills $0.05 per question answered
+    and the Free tier caps at 50 answers/month. get_workspace_info is the only published way
+    to read "workspace details, plan, limits, usage" — an agent should call it before a bulk
+    run, because a bulk_approve_questions or a large upload_questionnaire spends real money.
+  source: https://1up.ai/pricing
+request_tracing:
+  header: none published
+concurrency_control:
+  detail: >-
+    HTTP 423 Locked is one of the five status codes 1up's client translates by name, and it
+    passes the server's message through verbatim rather than rewriting it — implying a real
+    resource-locking model (most likely a questionnaire being processed) that is not
+    documented publicly.
+  source: pypi:1up-mcp==0.1.0 (oneup_mcp/api_client.py)
+cross_references:
+  authentication: authentication/1up-authentication.yml
+  scopes: scopes/1up-scopes.yml
+  errors: errors/1up-problem-types.yml
+  lifecycle: lifecycle/1up-lifecycle.yml
+  rate_limits: rate-limits/1up-rate-limits.yml
+  plans: plans/1up-plans-pricing.yml
+  data_model: data-model/1up-data-model.yml

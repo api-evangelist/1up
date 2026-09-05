@@ -1,0 +1,63 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://help.1up.ai/en/articles/14304740-mcp ; https://1up.ai/legal/terms-of-service ;
+  pypi:1up-mcp==0.1.0
+versioning:
+  scheme: uri-path
+  current: v1
+  applies_to: https://api.1upapi.com/api/v1/
+  mcp_versioning: none
+  docs: null
+  note: >-
+    The MCP surface carries no version at all — not in the URL, not in a header, not in the
+    protected-resource metadata. An agent has no way to pin the tool contract it was built
+    against.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No deprecation policy, no Sunset/Deprecation header support, no advance-notice
+    commitment is published anywhere.
+  observed_events:
+  - date: '2026-04-11'
+    kind: transport migration
+    what: >-
+      1up moved its MCP server from a locally-installed stdio process (pip/pipx/uvx
+      1up-mcp) to a cloud-hosted Streamable HTTP endpoint at https://mcp.1up.ai/mcp, and
+      published a "Migrating from Local (PyPI) Install" section telling users to replace
+      {"command": "1up-mcp"} with {"type": "http", "url": "https://mcp.1up.ai/mcp"} and
+      uninstall the package.
+    handled_well:
+    - A migration path is documented with before/after config for each client.
+    - The PyPI package was left published rather than yanked.
+    handled_poorly:
+    - No sunset date for the local path.
+    - No version bump on PyPI to signal the change (still 0.1.0 from 2026-03-27).
+    - No changelog entry anywhere; the only record is prose inside a help article.
+    source: https://help.1up.ai/en/articles/14304740-mcp
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA. The Terms of Service is the only contractual document published; the
+    Enterprise tier is "Contact us" and any availability commitment would live in a private
+    agreement.
+status_page: null
+status_page_note: >-
+  No status page. status.1up.ai does not resolve (NXDOMAIN) and 1up.ai/status returns 404.
+  1up's own client error text tells users to "Try again or check service status" — advice
+  an agent cannot act on, because there is no service-status surface to check.
+changelog: null
+changelog_note: >-
+  No dated product changelog, release notes or what's-new page. 1up.ai/changelog,
+  /release-notes, /whats-new and /roadmap all return 404. The blog and the /news press page
+  are dated but are marketing, not release history. Help-centre articles carry a single
+  "last updated" date (the MCP article reads "April 11, 2026") and that is the only
+  versioning signal an integrator gets.
+roadmap: null
+deprecated_operations: []
+support:
+  channel: support@1up.ai
+  url: https://1up.ai/support
+  in_product: ticket from the 1up dashboard

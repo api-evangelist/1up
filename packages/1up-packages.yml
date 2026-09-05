@@ -1,0 +1,52 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://pypi.org/pypi/1up-mcp/json ; https://help.1up.ai/en/articles/14304740-mcp ;
+  https://help.1up.ai/en/articles/12997336-browser-extension
+note: >-
+  1up publishes exactly one package on a public code registry: the PyPI 1up-mcp MCP server
+  / OAuth CLI. There is no npm, Maven, NuGet, Go, RubyGems, Packagist or crates.io package
+  (checked 2026-09-05: registry.npmjs.org search for "1up.ai" returned zero results;
+  1up-mcp, @1up/mcp and oneup-mcp all 404 on npm; oneup-mcp, 1up, 1up-sdk and 1up-api all
+  404 on PyPI). There is no public source repository either — the package metadata names
+  https://gitlab.com/1upai/mcp_server, which returns HTTP 403 and redirects to the GitLab
+  sign-in page, so the code is private. The two browser extensions are store-distributed,
+  not registry-distributed, and are catalogued in components/1up-components.yml.
+packages:
+- language: python
+  registry: pypi
+  name: 1up-mcp
+  url: https://pypi.org/project/1up-mcp/
+  install: pip install 1up-mcp
+  official: true
+  version: 0.1.0
+  published: '2026-03-27'
+  requires_python: '>=3.10'
+  author: '1up.ai <support@1up.ai>'
+  homepage: https://www.1up.ai
+  repository: https://gitlab.com/1upai/mcp_server
+  repository_status: private (HTTP 403, redirects to GitLab sign-in)
+  summary: >-
+    MCP server for the 1up knowledge management platform — connect AI assistants to your
+    1up workspace
+  provides:
+  - MCP server (stdio) — deprecated in favour of the hosted https://mcp.1up.ai/mcp endpoint
+  - '1up-mcp CLI (auth login / auth status / auth logout) — see cli/1up-cli.yml'
+  currency_note: >-
+    Only one release has ever been published (0.1.0, 2026-03-27). The hosted MCP endpoint
+    the vendor now recommends was documented on 2026-04-11, two weeks AFTER this package's
+    only release, and the docs' migration section tells users to stop running it locally —
+    so a stale version number here reflects a deliberate product move to the hosted server,
+    not an abandoned SDK.
+alternate_install_methods:
+- pipx install 1up-mcp
+- uvx 1up-mcp auth login
+registries_checked:
+- {registry: pypi, found: 1}
+- {registry: npm, found: 0}
+- {registry: maven-central, found: 0}
+- {registry: nuget, found: 0}
+- {registry: pkg.go.dev, found: 0}
+- {registry: rubygems, found: 0}
+- {registry: packagist, found: 0}
+- {registry: crates.io, found: 0}

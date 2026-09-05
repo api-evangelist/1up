@@ -1,0 +1,27 @@
+generated: '2026-09-05'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: 1up.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  7 14:48:07 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: help.1up.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 25 22:43:54 2026 GMT
+  hsts: true
+  hsts_max_age: 15552000
+- host: mcp.1up.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Mar 18 23:59:59 2027 GMT
+  hsts: null
+domains:
+- domain: 1up.ai
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
