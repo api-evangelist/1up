@@ -22,7 +22,7 @@ tags:
 - Company
 - Artificial Intelligence
 - Sales Enablement
-- Knowledge-Management
+- Knowledge Management
 - RFP Automation
 - Security Questionnaires
 - MCP
@@ -40,6 +40,7 @@ tags_raw:
 - Agents
 - SaaS
 - Revenue Operations
+- Knowledge-Management
 apis:
 - aid: 1up:1up-mcp-server
   name: 1up MCP Server
@@ -58,13 +59,14 @@ apis:
   tags:
   - MCP
   - Agents
-  - Knowledge-Management
+  - Knowledge Management
   - RFP Automation
   tags_raw:
   - Model Context Protocol
   - Agents
   - Knowledge Management
   - RFP Automation
+  - Knowledge-Management
   properties:
   - type: MCPServer
     url: mcp/1up-mcp.yml
