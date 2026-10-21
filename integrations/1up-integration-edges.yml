@@ -106,6 +106,23 @@ edges:
   detected: '2026-10-21'
   detected_by: mirror-platform-listings.py
   category: sales
+- partner_name: Atlassian (own)
+  partner: atlassian
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.atlassian.com/vendors/1224783/1up-corp
+  mirror_of: atlassian/integrations/atlassian-integration-edges.yml
+  apps:
+  - 1up for Confluence
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: Integrations
 generated: '2026-10-18'
 method: searched
 source:
@@ -123,3 +140,4 @@ checked:
 - https://developer.salesforce.com/docs/atlas.en-us.packagingGuide.meta/packagingGuide/security_review_overview.htm
 - https://slack.com/marketplace
 - salesforce/integrations/salesforce-integration-edges.yml
+- atlassian/integrations/atlassian-integration-edges.yml

@@ -93,3 +93,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: 1up-atlassian-own
+  label: Atlassian (own)
+  partner: atlassian
+  partner_name: Atlassian (own)
+  category: Integrations
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.atlassian.com/vendors/1224783/1up-corp
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
