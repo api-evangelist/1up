@@ -64,41 +64,119 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-1up (1up Corp) is a New York City AI knowledge-automation company whose "Answer Engine"
-generates source-grounded answers for go-to-market teams — auto-completing RFPs, DDQs,
-security questionnaires and vendor assessments from a workspace of approved knowledge
-sources. Founded in 2021 by the founding team behind identity-security vendor HYPR, it has
-raised $8.5M from Upfront Ventures and Lightbank.
+1up (1up Corp, 1up.ai) is a New York City based AI knowledge-automation company whose "Answer Engine" generates source-grounded answers for go-to-market teams. The platform connects approved knowledge sources — Confluence, Notion, Google Drive, OneDrive, SharePoint, Box, Dropbox, Egnyte, Salesforce, Highspot, Seismic, Zendesk, Gong, GitBook, GitHub and public websites — into a workspace-isolated knowledge base, then uses it to auto-complete RFPs, DDQs, security questionnaires and vendor assessments in Excel, Word, PDF, CSV and web portals such as OneTrust, Panorays and Whistic. 1up's public machine surface is an MCP server rather than a REST developer program: a cloud-hosted, OAuth 2.1 protected Model Context Protocol endpoint at https://mcp.1up.ai/mcp exposing 31 documented tools across the Q&A library, questionnaires, knowledge base, knowledge groups and workspace, sold as its own $50/month pricing tier billed at $0.05 per answered question. Founded in 2021 by the founding team behind identity-security vendor HYPR, 1up has raised $8.5M from Upfront Ventures and Lightbank.
 
-- Website: https://1up.ai/
-- Documentation: https://help.1up.ai/en/
-- MCP server: https://help.1up.ai/en/articles/14304740-mcp
-- Pricing: https://1up.ai/pricing
+**Areas:** Company · Artificial Intelligence · Sales Enablement · Knowledge Management · RFP Automation · Security Questionnaires · MCP · Agents · Software-as-a-Service · Revenue Operations
 
-## What this profile found
+## 1up on APIs.io
 
-**1up's public machine surface is an MCP server, not a REST developer program.** There is
-no OpenAPI anywhere — contract discovery probed every host in this record, including the
-platform REST host `api.1upapi.com` named by 1up's own PyPI package, and every spec path
-missed. What 1up does ship is:
+Everything profiled for 1up is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/1up/](https://apis.io/providers/1up/)** — or go straight to one of the APIs or properties below.
 
-- A cloud-hosted **Model Context Protocol server** at `https://mcp.1up.ai/mcp` over
-  Streamable HTTP, protected by OAuth 2.1 (authorization code + PKCE `S256`, dynamic client
-  registration), with **31 documented tools** across the Q&A library, questionnaires,
-  knowledge base, knowledge groups and workspace.
-- Real **RFC 8414** and **RFC 9728** discovery documents on that host — the only
-  `/.well-known/` documents 1up serves anywhere.
-- A first-party **PyPI package**, `1up-mcp` 0.1.0, carrying the OAuth login CLI.
-- A provider-authored **`llms.txt`** at `https://1up.ai/llms.txt`.
+### APIs (1)
 
-**The MCP server is a priced product line, not a free discovery surface.** 1up sells a
-$50/month "MCP" tier and bills questionnaire automation through it at **$0.05 per question
-answered** — which is unusual enough to be the headline finding here.
+- [1up MCP Server](https://apis.io/apis/1up/1up-mcp-server/) — The 1up MCP Server is a cloud-hosted Model Context Protocol server that lets an AI assistant work directly against a 1up workspace — query the knowledge…
 
-Notable gaps, recorded rather than papered over: no OpenAPI, no status page, no changelog,
-no rate limits or `429` semantics, no idempotency of any kind, no vulnerability-disclosure
-program, and no A2A agent card. The `resource_documentation` URL 1up publishes in its own
-RFC 9728 document (`https://docs.1up.ai/mcp`) does not resolve, and its `llms.txt`
-advertises a `https://1up.ai/trust` page that returns 404.
+### Published properties
 
-Every artifact in this repository carries `generated`, `method` and `source` frontmatter.
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [1up](https://apis.io/servers/1up/1up/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [1Up Authentication](https://apis.io/security/1up/1up-authentication/)
+- [1Up Domain Security](https://apis.io/security/1up/1up-domain-security/)
+- [1Up Trust Center](https://apis.io/security/1up/1up-trust-center/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [1Up Scopes](https://apis.io/scopes/1up/1up-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [1Up Plans Pricing](https://apis.io/plans/1up/1up-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [1Up Rate Limits](https://apis.io/rate-limits/1up/1up-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://1up.ai/)
+- [Documentation](https://help.1up.ai/en/)
+- [Getting started](https://help.1up.ai/en/articles/13002972-quick-start-guide)
+- [API reference](https://help.1up.ai/en/articles/14304740-mcp)
+- [Pricing](https://1up.ai/pricing)
+- [Sign up](https://app.1up.ai/signup)
+- [Support](https://1up.ai/support)
+- [Blog](https://1up.ai/blog)
+- [Compliance](https://1up.ai/security)
+- [Terms of service](https://1up.ai/legal/terms-of-service)
+- [Privacy policy](https://1up.ai/legal/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 42.8** — developing · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.8 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 63.7 |
+| Access clarity | 85.5 |
+
+**Agent readiness 26.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+
+**Regulatory alignment 36.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/1up/](https://apis.io/providers/1up/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for 1up: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/1up/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
