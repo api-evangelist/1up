@@ -130,14 +130,14 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 42.8** — developing · rubric 0.24.0 · scored 2026-10-17
+**Kin Score 44.2** — developing · rubric 0.25.0 · scored 2026-10-23
 
 | Facet | Score |
 |---|---|
 | Discoverability | 75.8 |
 | Contract quality | 0.0 |
 | Contract governance | 18.2 |
-| Operational transparency | 0.0 |
+| Operational transparency | 10.5 |
 | Developer ergonomics | 63.7 |
 | Access clarity | 85.5 |
 
@@ -164,6 +164,8 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Protected Resource Metadata | verified |
 | Dynamic Client Registration | yes |
 | Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
 
 **Regulatory alignment 36.4** — Horizontal (data, software, accessibility, platform)
 
