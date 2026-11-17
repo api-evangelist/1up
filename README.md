@@ -90,27 +90,34 @@ Model Context Protocol servers that expose the API to agents.
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [1Up Authentication](https://apis.io/security/1up/1up-authentication/)
-- [1Up Domain Security](https://apis.io/security/1up/1up-domain-security/)
-- [1Up Trust Center](https://apis.io/security/1up/1up-trust-center/)
+- [1up Authentication](https://apis.io/security/1up/1up-authentication/)
+- [1up Domain Security](https://apis.io/security/1up/1up-domain-security/)
+- [1up Trust Center](https://apis.io/security/1up/1up-trust-center/)
 
 #### OAuth scopes (1)
 
 The permissions the API asks for.
 
-- [1Up Scopes](https://apis.io/scopes/1up/1up-scopes/)
+- [1up Scopes](https://apis.io/scopes/1up/1up-scopes/)
 
-#### Plans and pricing (1)
+#### Plans and pricing (2)
 
 Published plans, tiers and prices.
 
-- [1Up Plans Pricing](https://apis.io/plans/1up/1up-plans-pricing/)
+- [1up Plans Pricing](https://apis.io/plans/1up/1up-plans-pricing/)
+- [1up Price Estimates](https://apis.io/plans/1up/1up-price-estimates/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [1Up Rate Limits](https://apis.io/rate-limits/1up/1up-rate-limits/)
+- [1up Rate Limits](https://apis.io/rate-limits/1up/1up-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [1up Finops](https://apis.io/finops/1up/1up-finops/)
 
 ## Where to find this API
 
